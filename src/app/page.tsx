@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 
 import { createBrowserClient } from "@supabase/ssr";
 
@@ -13,7 +12,7 @@ export default function Home() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `http://example.com/auth/callback`,
+        redirectTo: `${location.origin}/auth/callback`,
       },
     });
   };
