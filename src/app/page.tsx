@@ -1,25 +1,30 @@
 "use client";
-
-import { createBrowserClient } from "@supabase/ssr";
+import { supabase } from "./providers";
 
 export default function Home() {
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
-  const onClick = async () => {
-    await supabase.auth.signInWithOAuth({
+  const handleOnClick = async () => {
+    const { data } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: `${location.origin}/auth/callback`,
+        queryParams: {
+          access_type: "offline",
+          prompt: "consent",
+        },
       },
     });
+
+    console.log("DATA: ", data);
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <button onClick={onClick}>Sign in with Google</button>
+      {/* <a
+        href={`https://ixoocxoteluivttovfzm.supabase.co/auth/v1/authorize?provider=google&redirect_to=https://my-next-app-dn9.pages.dev/auth/callback`}
+      >
+        Google
+      </a> */}
+      <button onClick={handleOnClick}>Google</button>
     </main>
   );
 }
